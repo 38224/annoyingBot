@@ -1,8 +1,9 @@
 const {Client,Attachment} = require('discord.js')
 const bot = new Client();
-
 const ytdl = require("ytdl-core");
-
+ 
+const Game = require('./blackjack/game');
+ 
 const token = 'NzE3MDk4ODkwMjg4OTU1NTM1.XtVYdA.dXAedQbyo6PhDTkaipshBrIyy38';
 
 const PREFIX = "+"
@@ -87,6 +88,12 @@ bot.on('message',message => {
 				message.channel.send("---> " + Math.round(Math.random() * (value - 1) + 1) + " <----");
 			
 				if(message.guild.connection) message.guild.voiceConnection.disconnect();
+			break;
+			case 'bj':
+			case 'blackj':
+				message.channel.send("a jogari backjack...");
+				const game = new Game(message.channel);
+				game.init();
 			break;
 		}
 	
