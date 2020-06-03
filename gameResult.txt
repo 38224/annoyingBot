@@ -1,3 +1,3 @@
-You have played 3 rounds:
+You have played 7 rounds:
 		
-Win rate: 33% | You end with draw 0% | You had: 2 excesses | You had: 1 BlackJacks
+Win rate: 0% | You end with draw 0% | You had: 7 excesses | You had: 0 BlackJacks

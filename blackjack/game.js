@@ -77,7 +77,7 @@ const Game = function(chan) {
 		dealerTake = true;
 		playerTake = true;
 		shouldTakeCards = true;
-		console.log(`Round ${round}`);
+		channel.send(`Round ${round}`);
 		startRound();
     while (shouldTakeCards) { takeCards(); }
 		round++;
@@ -98,10 +98,10 @@ const Game = function(chan) {
   const dealerTakeCard = function() {
     if (dealer.sum <= 17) {
 			dealer.addCardToHand(deck.dealCard());
-			console.log('Dealer take card.');
+			channel.send('Dealer take card.');
 			cardRemains--;
 		} else { 
-			console.log('Dealer do not take card.');
+			channel.send('Dealer do not take card.');
 			dealerTake = !dealerTake;
 		}
 	};
@@ -138,9 +138,9 @@ const Game = function(chan) {
 				suit = colorSuit(dealer.showHand[0].suit);
 				string = `Dealer's hand:\r\n	[${dealer.showHand[0].rank} ${suit}]`;
 				for (let i = 1; i < dealer.showHand.length; i++) {
-          string += '\r\n Card';
+          			string += '\r\n Card';
 				}
-				console.log(string);
+				channel.send(string);
 				break;
 			case 'player':
         string = 'Player\'s hand:\r\n';
@@ -148,7 +148,7 @@ const Game = function(chan) {
 					suit = colorSuit(player.hand[i].suit);
           string += `	[${player.hand[i].rank} ${suit}] (${player.hand[i].value}) \r\n`;
 				}
-				console.log(string);
+				channel.send(string);
 				break;
 		}	
 	};
@@ -159,7 +159,7 @@ const Game = function(chan) {
 				for (let i = 0; i < dealer.hand.length; i++) {
       string += `	[${dealer.hand[i].value} ${dealer.hand[i].suit}] \r\n`;
 				}
-				console.log(string);
+				channel.send(string);
 	};
 
   const checkWinner = function() {
@@ -197,18 +197,18 @@ const Game = function(chan) {
 	};
 
 	const showResult = function(result) {
-		console.log('The result hands are: \r\n');
+		channel.send('The result hands are: \r\n');
 		showResultHand();
 		showHand('player');
 		switch (result) {
 			case 'd':
-				console.log('DRAW \r\n');
+				channel.send('DRAW \r\n');
 				break;
 			case 'w':
-				console.log('CONGRATUATIONS!You are WINNER \r\n');
+				channel.send('CONGRATUATIONS!You are WINNER \r\n');
 				break;
 			case 'l':
-				console.log('Sorry, you loose this round \r\n');
+				channel.send('Sorry, you loose this round \r\n');
 				break;
 		}
 	};
@@ -217,7 +217,7 @@ const Game = function(chan) {
 		if (readlineSync.keyInYN('Do you want to see your statistics?')) {
 			file.readFile(channel);
 		} else { 
-			console.log('You can find stats in gameResult.txt');
+			channel.send('You can find stats in gameResult.txt');
 		}
 	};
 	
