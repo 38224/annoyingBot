@@ -77,7 +77,7 @@ const Game = function(chan) {
 		dealerTake = true;
 		playerTake = true;
 		shouldTakeCards = true;
-		channel.send(`Round ${round}`);
+		showMessage(`Round ${round}`);
 		startRound();
     while (shouldTakeCards) { takeCards(); }
 		round++;
@@ -98,10 +98,10 @@ const Game = function(chan) {
   const dealerTakeCard = function() {
     if (dealer.sum <= 17) {
 			dealer.addCardToHand(deck.dealCard());
-			channel.send('Dealer take card.');
+			showMessage('Dealer take card.');
 			cardRemains--;
 		} else { 
-			channel.send('Dealer do not take card.');
+			showMessage('Dealer do not take card.');
 			dealerTake = !dealerTake;
 		}
 	};
@@ -140,7 +140,7 @@ const Game = function(chan) {
 				for (let i = 1; i < dealer.showHand.length; i++) {
           			string += '\r\n Card';
 				}
-				channel.send(string);
+				showMessage(string);
 				break;
 			case 'player':
         string = 'Player\'s hand:\r\n';
@@ -148,7 +148,7 @@ const Game = function(chan) {
 					suit = colorSuit(player.hand[i].suit);
           string += `	[${player.hand[i].rank} ${suit}] (${player.hand[i].value}) \r\n`;
 				}
-				channel.send(string);
+				showMessage(string);
 				break;
 		}	
 	};
@@ -159,7 +159,7 @@ const Game = function(chan) {
 				for (let i = 0; i < dealer.hand.length; i++) {
       string += `	[${dealer.hand[i].value} ${dealer.hand[i].suit}] \r\n`;
 				}
-				channel.send(string);
+				showMessage(string);
 	};
 
   const checkWinner = function() {
@@ -197,18 +197,18 @@ const Game = function(chan) {
 	};
 
 	const showResult = function(result) {
-		channel.send('The result hands are: \r\n');
+		showMessage('The result hands are: \r\n');
 		showResultHand();
 		showHand('player');
 		switch (result) {
 			case 'd':
-				channel.send('DRAW \r\n');
+				showMessage('DRAW \r\n');
 				break;
 			case 'w':
-				channel.send('CONGRATUATIONS!You are WINNER \r\n');
+				showMessage('CONGRATUATIONS!You are WINNER \r\n');
 				break;
 			case 'l':
-				channel.send('Sorry, you loose this round \r\n');
+				showMessage('Sorry, you loose this round \r\n');
 				break;
 		}
 	};
@@ -217,8 +217,12 @@ const Game = function(chan) {
 		if (readlineSync.keyInYN('Do you want to see your statistics?')) {
 			file.readFile(channel);
 		} else { 
-			channel.send('You can find stats in gameResult.txt');
+			showMessage('You can find stats in gameResult.txt');
 		}
+	};
+
+	const showMessage = function (msg) {
+		setTimeout(function(){ channel.send(msg); }, 500);
 	};
 	
 	const colorSuit = function(suit) {
